@@ -1,118 +1,39 @@
 <template>
-  <h1>{{ message }}</h1>
-  <button @click="sortUsersByAge">Sort users by age</button>
-  <br />
-  <button @click="hideInactive = !hideInactive">{{ toggleButtonName }}</button>
-
-  <h2>Number of active users (computed property): {{ numberOfActiveUsers }}</h2>
-  <h2>Number of active users (computed property): {{ numberOfActiveUsers }}</h2>
-  <h2>Number of active users (computed property): {{ numberOfActiveUsers }}</h2>
-
-  <h2>
-    Number of active users (method call): {{ computeNumberOfActiveUsers() }}
-  </h2>
-  <h2>
-    Number of active users (method call): {{ computeNumberOfActiveUsers() }}
-  </h2>
-  <h2>
-    Number of active users (method call): {{ computeNumberOfActiveUsers() }}
-  </h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Index</th>
-        <th>Id</th>
-        <th>Name</th>
-        <th>Age</th>
-        <th>Operation</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr v-for="(user, index) in filteredUsers" :key="user.id">
-        <td>{{ index + 1 }}</td>
-        <td>{{ user.id }}</td>
-        <td :class="{ inactive: !user.active }">
-          {{ user.name }}
-        </td>
-        <td>{{ user.age }}</td>
-        <td>
-          <button @click="user.active = !user.active">
-            {{ user.active ? 'Deactivate' : 'Restore' }}
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="card">
+    <h1 ref="title">Template Refs</h1>
+    <input ref="input" type="text">
+    <button @click="printDomElement">print Dom elements in the console</button>
+    <button @click="changeTitle">Change title</button>
+  </div>
 </template>
 
-
 <script setup>
-import { computed, ref } from 'vue'
+import { onMounted, ref } from 'vue';
 
-let message = ref('Hello, Computed Properties!')
+let title = ref();
+let input = ref();
 
-const users = ref([
-  {
-    "id": 1,
-    "name": "John Doe",
-    "age": 30,
-    "active": true
-  },
-  {
-    "id": 2,
-    "name": "Jane Smith",
-    "age": 25,
-    "active": false
-  },
-  {
-    "id": 3,
-    "name": "Emily Johnson",
-    "age": 28,
-    "active": true
-  },
-  {
-    "id": 4,
-    "name": "Michael Brown",
-    "age": 35,
-    "active": false
-  },
-  {
-    "id": 5,
-    "name": "Linda Davis",
-    "age": 40,
-    "active": true
+  function printDomElement(){
+    console.log(title.value)
+    console.log(input.value)
   }
-]
-)
 
-let hideInactive = ref(false)
+  function changeTitle(){
+    title.value.innerText = "Hello, Friend"
+  }
 
-function sortUsersByAge() {
-  users.value.sort((a, b) => a.age - b.age)
-}
+  onMounted(()=>{
+    input.value.focus();
+  })
 
-let toggleButtonName = computed(() =>
-  hideInactive.value ? 'Show all' : 'Hide inactive'
-)
-
-let numberOfActiveUsers = computed(() => {
-  console.log('computed property')
-  return users.value.filter((user) => user.active).length
-})
-
-let computeNumberOfActiveUsers = () => {
-  console.log('method call')
-  return users.value.filter((user) => user.active).length
-}
-
-let filteredUsers = computed(() =>
-  hideInactive.value ? users.value.filter((user) => user.active) : users.value
-)
+  
 </script>
 
 <style scoped>
-.inactive {
-  color: red;
-  text-decoration: line-through;
-}
+  .card{
+    background-color: purple;
+    color:white;
+    padding: 20px 10px;
+    margin-bottom: 10px;
+  }
 </style>
